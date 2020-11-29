@@ -11,6 +11,7 @@ Created on Fri Nov 20 15:28:43 2020
 
 import os
 import csv
+import matplotlib.pyplot as plt
 
 
 def Holzer(imax, omega, Ks, Is, tq, ang):
@@ -102,6 +103,7 @@ def exporter(data):
     outer = []
     d = ''
     for k in range(len(data)):
+        y = data[k][1]
         d = ' '
         if len(str(data[k][0])) < 7:  # corrects the lengh
             spacenum = 7 - len(str(data[k][0]))
@@ -111,7 +113,10 @@ def exporter(data):
             num = str(data[k][0])[:7]
         d = d + ' ' + num
         inner = [data[k][0]]
+        x = []
+        y = data[k][1]
         for ii in range(len(data[k][1])):
+            x.append(ii)
             if len(str(data[k][1][ii])) < 7:  # corrects the lengh
                 spacenum = 7 - len(str(data[k][1][ii]))
                 spaces = ' ' * spacenum
@@ -131,17 +136,26 @@ def exporter(data):
             inner.append(data[k][2][iii])
         print(d)
         outer.append(inner)
+        plt.plot(x, y, label="Omega="+str(data[k][0])[:4])
+    plt.legend()
+    plt.ylabel('Deflection(rad)')
+    plt.grid()
 
     # if saving is required
     option = input('Save Results? (y/n) :  ')
     if option == 'y':
         directory = os.getcwd()
-        filename = input('Enter filename :  ') + '.csv'
+        name = input('Enter filename :  ')
+        form = input('plot type (png/pdf/svg) :  ')
+        filename = name + '.csv'
+        plotname = name + '.' + form
         with open(filename, 'w') as f:
             write = csv.writer(f)
             write.writerow(fields)
             write.writerows(outer)
         print(filename + ' saved at ' + directory)
+        plt.savefig(plotname, format=form)
+        print(plotname + ' saved at ' + directory)
 
 
 def main():
