@@ -84,7 +84,7 @@ def exporter(data):
     """
     This function returns the data in clean way
     """
-
+    plt.clf()
     topstring = ' f(rad/s)'
     fields = ['Freq(rad/s)']
     for i in range(len(data[0][1])):
@@ -136,10 +136,11 @@ def exporter(data):
             inner.append(data[k][2][iii])
         print(d)
         outer.append(inner)
-        plt.plot(x, y, label="Omega="+str(data[k][0])[:4])
-    plt.legend()
+        plt.plot(x, y, label="Omega="+str(data[k][0])[:5])
+    plt.style.use('bmh')
+    plt.grid(b=True, axis='both')
+    plt.legend(loc='best')
     plt.ylabel('Deflection(rad)')
-    plt.grid()
 
     # if saving is required
     option = input('Save Results? (y/n) :  ')
